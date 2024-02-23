@@ -7,22 +7,20 @@ const toggleAccordion = (card) => {
   const questions = card.querySelectorAll('.faq-question');
   const answers = card.querySelectorAll('.faq-answer');
 
-  if (content && icon) {
-    if (content.style.maxHeight !== '0px') {
-      content.style.maxHeight = '0px';
-      icon.style.transform = 'rotate(0deg)';
-      card.style.backgroundColor = 'var(--backgrounds--accordion-default)';
-      card.style.transform = 'scale(1)';
-      questions.forEach(question => question.classList.remove('is-active'));
-      answers.forEach(answer => answer.classList.remove('is-active'));
-    } else {
-      content.style.maxHeight = `${content.scrollHeight}px`;
-      icon.style.transform = 'rotate(45deg)';
-      card.style.backgroundColor = 'var(--backgrounds--accordion-active)';
-      card.style.transform = 'scale(1.02)';
-      questions.forEach(question => question.classList.add('is-active'));
-      answers.forEach(answer => answer.classList.add('is-active'));
-    }
+  if (content.style.maxHeight !== '0px') {
+    content.style.maxHeight = '0px';
+    icon.style.transform = 'rotate(0deg)';
+    card.style.backgroundColor = 'var(--backgrounds--accordion-default)';
+    card.style.transform = 'scale(1)';
+    questions.forEach(question => question.classList.remove('is-active'));
+    answers.forEach(answer => answer.classList.remove('is-active'));
+  } else {
+    content.style.maxHeight = `${content.scrollHeight}px`;
+    icon.style.transform = 'rotate(45deg)';
+    card.style.backgroundColor = 'var(--backgrounds--accordion-active)';
+    card.style.transform = 'scale(1.02)';
+    questions.forEach(question => question.classList.add('is-active'));
+    answers.forEach(answer => answer.classList.add('is-active'));
   }
 };
 
@@ -34,14 +32,12 @@ const closeAllAccordions = () => {
     const questions = card.querySelectorAll('.faq-question');
     const answers = card.querySelectorAll('.faq-answer');
 
-    if (content && icon) {
-      content.style.maxHeight = '0px';
-      icon.style.transform = 'rotate(0deg)';
-      card.style.backgroundColor = 'var(--backgrounds--accordion-default)';
-      card.style.transform = 'scale(1)';
-      questions.forEach(question => question.classList.remove('is-active'));
-      answers.forEach(answer => answer.classList.remove('is-active'));
-    }
+    content.style.maxHeight = '0px';
+    icon.style.transform = 'rotate(0deg)';
+    card.style.backgroundColor = 'var(--backgrounds--accordion-default)';
+    card.style.transform = 'scale(1)';
+    questions.forEach(question => question.classList.remove('is-active'));
+    answers.forEach(answer => answer.classList.remove('is-active'));
   });
 };
 
@@ -58,6 +54,26 @@ window.onload = () => {
       toggleAccordion(card);
     });
   });
+
+  // Open the first accordion item on load
+  if (document.querySelectorAll('.faq_accordion').length > 0) {
+    const firstAccordionCard = document.querySelectorAll('.faq_accordion')[0];
+    toggleAccordion(firstAccordionCard);
+  }
 };
 
-// Optional: Handle scroll to toggle active class, if needed for your use case
+// Handle scroll to toggle active class
+const handleScroll = () => {
+  const scrollPercentage = (document.documentElement.scrollTop + document.body.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight) * 100;
+
+  document.querySelectorAll('.is-nav-scrolled').forEach((button) => {
+    button.classList.toggle('active', scrollPercentage > 3);
+  });
+};
+
+// Debounce scroll events
+let scrollTimeout;
+document.addEventListener('scroll', () => {
+  clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(handleScroll, 100);
+});
