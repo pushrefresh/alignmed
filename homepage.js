@@ -4,25 +4,25 @@
 const toggleAccordion = (card) => {
   const content = card.querySelector('.faq_body');
   const icon = card.querySelector('.faq_icon');
-  const questions = card.querySelectorAll('.faq-question');
-  const answers = card.querySelectorAll('.faq-answer');
-
-  if (content.style.maxHeight !== '0px') {
-    content.style.maxHeight = '0px';
-    icon.style.transform = 'rotate(0deg)';
-    card.style.backgroundColor = 'var(--backgrounds--accordion-default)';
-    card.style.transform = 'scale(1)';
-    // Apply alternate color when accordion is not active
-    questions.forEach(question => question.style.color = 'var(--text-color--text-alternate)');
-    answers.forEach(answer => answer.style.color = 'var(--text-color--text-alternate)');
-  } else {
-    content.style.maxHeight = `${content.scrollHeight}px`;
-    icon.style.transform = 'rotate(45deg)';
-    card.style.backgroundColor = 'var(--backgrounds--accordion-active)';
-    card.style.transform = 'scale(1.02)';
-    // Apply primary color when accordion is active
-    questions.forEach(question => question.style.color = 'var(--text-color--text-primary)');
-    answers.forEach(answer => answer.style.color = 'var(--text-color--text-primary)');
+  if (content && icon) { // Check if content and icon are not null
+    const questions = card.querySelectorAll('.faq-question');
+    const answers = card.querySelectorAll('.faq-answer');
+  
+    if (content.style.maxHeight !== '0px') {
+      content.style.maxHeight = '0px';
+      icon.style.transform = 'rotate(0deg)';
+      card.style.backgroundColor = 'var(--backgrounds--accordion-default)';
+      card.style.transform = 'scale(1)';
+      questions.forEach(question => question.style.color = 'var(--text-color--text-alternate)');
+      answers.forEach(answer => answer.style.color = 'var(--text-color--text-alternate)');
+    } else {
+      content.style.maxHeight = `${content.scrollHeight}px`;
+      icon.style.transform = 'rotate(45deg)';
+      card.style.backgroundColor = 'var(--backgrounds--accordion-active)';
+      card.style.transform = 'scale(1.02)';
+      questions.forEach(question => question.style.color = 'var(--text-color--text-primary)');
+      answers.forEach(answer => answer.style.color = 'var(--text-color--text-primary)');
+    }
   }
 };
 
@@ -31,13 +31,14 @@ const closeAllAccordions = () => {
   document.querySelectorAll('.faq_accordion').forEach((card) => {
     const content = card.querySelector('.faq_body');
     const icon = card.querySelector('.faq_icon');
-    content.style.maxHeight = '0px';
-    icon.style.transform = 'rotate(0deg)';
-    card.style.backgroundColor = 'var(--backgrounds--accordion-default)';
-    card.style.transform = 'scale(1)';
-    // Reset color for questions and answers to alternate when accordion is closed
-    card.querySelectorAll('.faq-question').forEach(question => question.style.color = 'var(--text-color--text-alternate)');
-    card.querySelectorAll('.faq-answer').forEach(answer => answer.style.color = 'var(--text-color--text-alternate)');
+    if (content && icon) { // Check if content and icon are not null
+      content.style.maxHeight = '0px';
+      icon.style.transform = 'rotate(0deg)';
+      card.style.backgroundColor = 'var(--backgrounds--accordion-default)';
+      card.style.transform = 'scale(1)';
+      card.querySelectorAll('.faq-question').forEach(question => question.style.color = 'var(--text-color--text-alternate)');
+      card.querySelectorAll('.faq-answer').forEach(answer => answer.style.color = 'var(--text-color--text-alternate)');
+    }
   });
 };
 
@@ -45,7 +46,9 @@ const closeAllAccordions = () => {
 window.onload = () => {
   const allContents = document.querySelectorAll('.faq_body');
   allContents.forEach((content) => {
-    content.style.maxHeight = '0px';
+    if (content) { // Ensure content is not null
+      content.style.maxHeight = '0px';
+    }
   });
 
   if (allContents.length > 0) {
@@ -56,11 +59,9 @@ window.onload = () => {
     firstAccordionCard.style.transform = 'scale(1.02)';
 
     const firstAccordionIcon = firstAccordionCard.querySelector('.faq_icon');
-    if (firstAccordionIcon) {
+    if (firstAccordionIcon) { // Check if the icon is not null
       firstAccordionIcon.style.transform = 'rotate(45deg)';
     }
-
-    // Set text color for the first accordion's questions and answers to primary
     firstAccordionCard.querySelectorAll('.faq-question').forEach(question => question.style.color = 'var(--text-color--text-primary)');
     firstAccordionCard.querySelectorAll('.faq-answer').forEach(answer => answer.style.color = 'var(--text-color--text-primary)');
   }
@@ -78,7 +79,9 @@ const handleScroll = () => {
   const scrollPercentage = (document.documentElement.scrollTop + document.body.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight) * 100;
   
   document.querySelectorAll('.is-nav-scrolled').forEach((button) => {
-    button.classList.toggle('active', scrollPercentage > 3);
+    if (button) { // Ensure button is not null
+      button.classList.toggle('active', scrollPercentage > 3);
+    }
   });
 };
 
